@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
 using MagicOnion.Client;
+using Shared.Hubs;
+using Shared.MessagePackObjects;
 
 // IGamingHubReceiver の実装が記述された GamingHubClient クラス
 public class GamingHubClient : IGamingHubReceiver
