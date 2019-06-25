@@ -12,8 +12,10 @@ public class GameClient : MonoBehaviour
     string m_UserName;
     const string m_RoomName = "MO";
 
+    GameObject cube;
+
     // StreamingHub クライアントで使用する gRPC チャネルを生成
-    readonly Channel channel = new Channel("localhost", 12345, ChannelCredentials.Insecure);
+    readonly Channel channel = new Channel("0.0.0.0", 12345, ChannelCredentials.Insecure);
 
     // StreamingHub サーバと通信を行うためのクライアント生成
     readonly GamingHubClient client = new GamingHubClient();
@@ -26,15 +28,23 @@ public class GameClient : MonoBehaviour
     async Task Start()
     {
         // ゲーム起動時に設定した部屋名のルームに設定したユーザ名で入室する。
-        await client.ConnectAsync(channel, m_RoomName, m_UserName);
+        cube = await client.ConnectAsync(channel, m_RoomName, m_UserName);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (cube == null) return;
+
+        var x = Input.GetAxis("Horizontal") * Time.deltaTime * 150.0f;
+        var z = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f;
+
+        cube.gameObject.transform.Rotate(0, x, 0);
+        cube.gameObject.transform.Translate(0, 0, z);
+
         // 毎フレームプレイヤーの位置(Vector3) と回転(Quaternion) を更新し、
         // ルームに入室している他ユーザ全員にブロードキャスト送信する
-        client.MoveAsync(m_PlayerTransform.position, m_PlayerTransform.rotation);
+        client.MoveAsync(cube.gameObject.transform.position, cube.gameObject.transform.rotation);
     }
 
     async Task OnDestroy() {

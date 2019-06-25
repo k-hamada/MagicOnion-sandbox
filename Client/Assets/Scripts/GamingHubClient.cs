@@ -52,8 +52,7 @@ public class GamingHubClient : IGamingHubReceiver
     // 部屋の他ユーザ全員にブロードキャスト送信する
     public Task MoveAsync(Vector3 position, Quaternion rotation)
     {
-        //return _client.MoveAsync(position, rotation);
-        return Task.CompletedTask;
+        return _client.MoveAsync(position, rotation);
     }
 
     // StreamingHubClient の解放処理

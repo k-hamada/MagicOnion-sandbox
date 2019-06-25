@@ -36,7 +36,7 @@ namespace Server
         {
             self.Position = position;
             self.Rotation = rotation;
-            Broadcast(room).OnMove(self);
+            BroadcastExceptSelf(room).OnMove(self);
         }
     }
 }
